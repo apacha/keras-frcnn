@@ -118,10 +118,7 @@ data_gen_train = data_generators.get_anchor_gt(train_imgs, classes_count, C, nn.
 data_gen_val = data_generators.get_anchor_gt(val_imgs, classes_count, C, nn.get_img_output_length,
                                              K.image_dim_ordering(), mode='val')
 
-if K.image_dim_ordering() == 'th':
-    input_shape_img = (3, None, None)
-else:
-    input_shape_img = (None, None, 3)
+input_shape_img = (None, None, 3)
 
 img_input = Input(shape=input_shape_img)
 roi_input = Input(shape=(None, 4))

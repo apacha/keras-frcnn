@@ -110,12 +110,8 @@ if C.network == 'resnet50':
 elif C.network == 'vgg':
     num_features = 512
 
-if K.image_dim_ordering() == 'th':
-    input_shape_img = (3, None, None)
-    input_shape_features = (num_features, None, None)
-else:
-    input_shape_img = (None, None, 3)
-    input_shape_features = (None, None, num_features)
+input_shape_img = (None, None, 3)
+input_shape_features = (None, None, num_features)
 
 img_input = Input(shape=input_shape_img)
 roi_input = Input(shape=(C.num_rois, 4))

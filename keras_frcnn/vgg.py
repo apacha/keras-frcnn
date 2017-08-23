@@ -19,11 +19,7 @@ from keras_frcnn.RoiPoolingConv import RoiPoolingConv
 
 
 def get_weight_path():
-    if K.image_dim_ordering() == 'th':
-        print('pretrained weights not available for VGG with theano backend')
-        return
-    else:
-        return 'vgg16_weights_tf_dim_ordering_tf_kernels.h5'
+    return 'vgg16_weights_tf_dim_ordering_tf_kernels.h5'
 
 
 def get_img_output_length(width, height):
@@ -35,10 +31,7 @@ def get_img_output_length(width, height):
 
 def nn_base(input_tensor=None, trainable=False):
     # Determine proper input shape
-    if K.image_dim_ordering() == 'th':
-        input_shape = (3, None, None)
-    else:
-        input_shape = (None, None, 3)
+    input_shape = (None, None, 3)
 
     if input_tensor is None:
         img_input = Input(shape=input_shape)
@@ -97,12 +90,8 @@ def rpn(base_layers, num_anchors):
 def classifier(base_layers, input_rois, num_rois, nb_classes=21, trainable=False):
     # compile times on theano tend to be very high, so we use smaller ROI pooling regions to workaround
 
-    if K.backend() == 'tensorflow':
-        pooling_regions = 7
-        input_shape = (num_rois, 7, 7, 512)
-    elif K.backend() == 'theano':
-        pooling_regions = 7
-        input_shape = (num_rois, 512, 7, 7)
+    pooling_regions = 7
+    input_shape = (num_rois, 7, 7, 512)
 
     out_roi_pool = RoiPoolingConv(pooling_regions, num_rois)([base_layers, input_rois])
 
