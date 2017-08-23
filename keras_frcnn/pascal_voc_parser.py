@@ -38,7 +38,7 @@ def get_data(input_path):
                 for line in f:
                     test_files.append(line.strip() + '.jpg')
         except Exception as e:
-            if data_path[-7:] == 'VOC2012':
+            if data_path[-7:] == 'VOC2012' or data_path[-7:] == 'VOC2007':
                 # this is expected, most pascal voc distibutions dont have the test.txt file
                 pass
             else:
