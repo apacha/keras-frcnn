@@ -26,7 +26,7 @@ class RoiPoolingConv(Layer):
 
     def __init__(self, pool_size, num_rois, **kwargs):
         self.dim_ordering = K.image_dim_ordering()
-        assert self.dim_ordering in {'tf', 'th'}, 'dim_ordering must be in {tf, th}'
+        assert self.dim_ordering in {'tf'}, 'Only supporting tensorflow'
 
         self.pool_size = pool_size
         self.num_rois = num_rois
@@ -63,6 +63,5 @@ class RoiPoolingConv(Layer):
 
         final_output = K.concatenate(outputs, axis=0)
         final_output = K.reshape(final_output, (1, self.num_rois, self.pool_size, self.pool_size, self.nb_channels))
-        final_output = K.permute_dimensions(final_output, (0, 1, 2, 3, 4))
 
         return final_output
