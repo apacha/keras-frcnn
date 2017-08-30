@@ -143,3 +143,4 @@ ehthumbs.db
 # Folder config file
 Desktop.ini
 /VOC_Data/
+*.pickle
