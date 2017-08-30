@@ -6,12 +6,13 @@ import time
 import numpy as np
 from optparse import OptionParser
 import pickle
+import traceback
 
 from keras import backend as K
 from keras.optimizers import Adam, SGD, RMSprop
 from keras.layers import Input
 from keras.models import Model
-from keras_frcnn import config, data_generators
+from keras_frcnn import config, data_generators, data_generators_fast
 from keras_frcnn import losses as losses
 import keras_frcnn.roi_helpers as roi_helpers
 from keras.utils import generic_utils
@@ -113,10 +114,11 @@ val_imgs = [s for s in all_imgs if s['imageset'] == 'test']
 print('Num train samples {}'.format(len(train_imgs)))
 print('Num val samples {}'.format(len(val_imgs)))
 
-data_gen_train = data_generators.get_anchor_gt(train_imgs, classes_count, C, nn.get_img_output_length,
-                                               K.image_dim_ordering(), mode='train')
-data_gen_val = data_generators.get_anchor_gt(val_imgs, classes_count, C, nn.get_img_output_length,
-                                             K.image_dim_ordering(), mode='val')
+data_gen_train = data_generators.get_anchor_gt(train_imgs, classes_count, C, nn.get_img_output_length, mode='train')
+data_gen_val = data_generators.get_anchor_gt(val_imgs, classes_count, C, nn.get_img_output_length, mode='val')
+
+data_gen_train = data_generators_fast.get_anchor_gt(train_imgs, C, nn.get_img_output_length, mode='train')
+data_gen_val = data_generators_fast.get_anchor_gt(val_imgs, C, nn.get_img_output_length, mode='val')
 
 input_shape_img = (None, None, 3)
 
@@ -291,7 +293,8 @@ for epoch_num in range(num_epochs):
                 break
 
         except Exception as e:
-            print('Exception: {}'.format(e))
+            traceback.print_exc()
+            print('Exception: {0}'.format(e))
             continue
 
 print('Training complete, exiting.')
