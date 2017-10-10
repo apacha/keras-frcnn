@@ -114,11 +114,11 @@ val_imgs = [s for s in all_imgs if s['imageset'] == 'test']
 print('Num train samples {}'.format(len(train_imgs)))
 print('Num val samples {}'.format(len(val_imgs)))
 
-# data_gen_train = data_generators.get_anchor_gt(train_imgs, classes_count, C, nn.get_img_output_length, mode='train')
-# data_gen_val = data_generators.get_anchor_gt(val_imgs, classes_count, C, nn.get_img_output_length, mode='val')
-
-data_gen_train = data_generators_fast.get_anchor_gt(train_imgs, C, nn.get_img_output_length, mode='train')
-data_gen_val = data_generators_fast.get_anchor_gt(val_imgs, C, nn.get_img_output_length, mode='val')
+data_gen_train = data_generators.get_anchor_gt(train_imgs, classes_count, C, nn.get_img_output_length, mode='train')
+data_gen_val = data_generators.get_anchor_gt(val_imgs, classes_count, C, nn.get_img_output_length, mode='val')
+#
+# data_gen_train = data_generators_fast.get_anchor_gt(train_imgs, C, nn.get_img_output_length, mode='train')
+# data_gen_val = data_generators_fast.get_anchor_gt(val_imgs, C, nn.get_img_output_length, mode='val')
 
 input_shape_img = (None, None, 3)
 
@@ -155,6 +155,8 @@ model_classifier.compile(optimizer=optimizer_classifier,
                          loss=[losses.class_loss_cls, losses.class_loss_regr(len(classes_count) - 1)],
                          metrics={'dense_class_{}'.format(len(classes_count)): 'accuracy'})
 model_all.compile(optimizer='sgd', loss='mae')
+
+model_all.summary()
 
 epoch_length = 1000
 num_epochs = int(options.num_epochs)

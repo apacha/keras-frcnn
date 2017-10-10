@@ -13,7 +13,7 @@ cd $pathToSourceRoot
 echo "Appending source root $($pathToSourceRoot) to temporary PYTHONPATH"
 $env:PYTHONPATH = $pathToSourceRoot
 
-# Started on Donkey, 17.08.2017
-Start-Transcript -path "$($pathToTranscript)2017-08-18_train_frcnn.txt" -append
+# Started on Donkey, 01.09.2017
+Start-Transcript -path "$($pathToTranscript)2017-09-01_train_frcnn_normal_datagenerator.txt" -append
 python "$($pathToSourceRoot)train_frcnn.py" --path "$($pathToSourceRoot)VOC_Data"
 Stop-Transcript
