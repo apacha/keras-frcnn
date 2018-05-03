@@ -10,7 +10,7 @@ from __future__ import division
 import warnings
 
 from keras.models import Model
-from keras.layers import Flatten, Dense, Input, Conv2D, MaxPooling2D
+from keras.layers import Flatten, Dense, Input, Conv2D, MaxPooling2D, Dropout
 from keras.layers import GlobalAveragePooling2D, GlobalMaxPooling2D, TimeDistributed
 from keras.engine.topology import get_source_inputs
 from keras.utils import layer_utils
@@ -93,7 +93,9 @@ def classifier(base_layers, input_rois, num_rois, nb_classes=21, trainable=False
 
     out = TimeDistributed(Flatten(name='flatten'))(out_roi_pool)
     out = TimeDistributed(Dense(4096, activation='relu', name='fc1'))(out)
+    out = TimeDistributed(Dropout(0.5))(out)
     out = TimeDistributed(Dense(4096, activation='relu', name='fc2'))(out)
+    out = TimeDistributed(Dropout(0.5))(out)
 
     out_class = TimeDistributed(Dense(nb_classes, activation='softmax', kernel_initializer='zero'),
                                 name='dense_class_{}'.format(nb_classes))(out)

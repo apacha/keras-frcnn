@@ -65,3 +65,10 @@ class RoiPoolingConv(Layer):
         final_output = K.reshape(final_output, (1, self.num_rois, self.pool_size, self.pool_size, self.nb_channels))
 
         return final_output
+    
+    
+    def get_config(self):
+        config = {'pool_size': self.pool_size,
+                  'num_rois': self.num_rois}
+        base_config = super(RoiPoolingConv, self).get_config()
+        return dict(list(base_config.items()) + list(config.items()))
